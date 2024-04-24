@@ -1,0 +1,17 @@
+{
+  "name": "project_portfolio_server_side",
+  "version": "1.0.0",
+  "description": "Server side componenet for Diego Ledesma's data science portfolio",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "Diego Ledesma",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mongodb": "^6.5.0"
+  }
+}
