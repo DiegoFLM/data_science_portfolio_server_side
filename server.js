@@ -10,11 +10,23 @@ var app = express();
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cors());
+
+app.use(cors({
+    origin: '*',  // Allows all domains
+    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 const port = process.env.PORT || 3000;
-// const uri = "mongodb+srv://diegoledesma:IxmsJjppmR7O8fAO@cluster0.nulgm4x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 const uri = process.env.MONGODB_URI;
+
+
+app.use((req, res, next) => {
+    console.log('Incoming Request:', req.method, req.path);
+    console.log('Headers:', req.headers);
+    next();
+});
+
 
 
 const client = new MongoClient(uri, {
