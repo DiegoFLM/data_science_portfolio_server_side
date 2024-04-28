@@ -13,7 +13,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 
 const port = process.env.PORT || 3000;
-const uri = process.env.MONGODB_URI;
+// const uri = process.env.MONGODB_URI;
+uri = "mongodb+srv://diegoledesma:IxmsJjppmR7O8fAO@cluster0.nulgm4x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
 
 
 const client = new MongoClient(uri, {
