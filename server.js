@@ -4,6 +4,8 @@ var express = require('express');
 const bodyParser = require("body-parser");
 const { MongoClient, ServerApiVersion, ObjectId} = require('mongodb');
 const cors = require('cors');
+const nodemailer = require('nodemailer');
+
 
 var app = express();
 
@@ -25,6 +27,18 @@ app.use((req, res, next) => {
     console.log('Incoming Request:', req.method, req.path);
     console.log('Headers:', req.headers);
     next();
+});
+
+
+
+
+// Configure the transporter for nodemailer
+const transporter = nodemailer.createTransport({
+    service: 'gmail', // or another email provider
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASSWORD
+    }
 });
 
 
@@ -67,7 +81,25 @@ app.post("/", async (req, res) => {
     try{
         const newPerson = req.body;
         const result = await client.db("test").collection("persons").insertOne(newPerson);
+
+        // Send email
+        const mailOptions = {
+            from: 'diegolassoo@gmail.com',
+            to: 'diego.ledesma@correounivalle.edu.co',
+            subject: 'New Comment Added',
+            text: `A new comment has been added: ${JSON.stringify(newPerson)}`
+        };
+
+        transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+                console.log('Email send error:', error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+
         res.status(201).json(result);
+
     }catch(err){
         res.status(500).json({error: err.message})
     }
